@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "displayName": "BeatAim Modding",
   "description": "BeatAim Modding",
-  "unity": "2019.1",
-  "author": {
-    "name": "Kamil Szurant",
-    "url": "https://twitter.com/kamyker"
-  }
+  "unity": "2019.2",
+	"author": {
+		"name": "Kamil Szurant",
+		"url": "https://github.com/kamyker/BeatAim-Modding-Package"
+	}
 }
