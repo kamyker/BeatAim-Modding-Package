@@ -34,7 +34,7 @@ using Debug = UnityEngine.Debug;
 public class BuildScriptSingleGroup : BuildScriptBase
 {
 	[MenuItem( "Assets/Build Addessable Group", true )]
-	static bool ValidateLogSelectedTransformName()
+	static bool ValidateBuildAddessableGroup()
 	{
 		// Return false if no transform is selected.
 		return Selection.activeObject.GetType() == typeof(AddressableAssetGroup);
