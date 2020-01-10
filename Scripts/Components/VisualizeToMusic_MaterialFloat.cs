@@ -14,10 +14,10 @@ public class VisualizeToMusic_MaterialFloat  : MonoBehaviour
 
 	private void OnEnable()
 	{
-		Enabled.Invoke( this );
+		Enabled?.Invoke( this );
 	}
 	private void OnDisable()
 	{
-		Disabled.Invoke( this );
+		Disabled?.Invoke( this );
 	}
 }

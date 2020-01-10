@@ -33,6 +33,13 @@ using Debug = UnityEngine.Debug;
 [CreateAssetMenu( fileName = "BuildScriptSingleGroup.asset", menuName = "Addressables/Content Builders/BuildScriptSingleGroup" )]
 public class BuildScriptSingleGroup : BuildScriptBase
 {
+	[MenuItem( "Assets/Build Addessable Group", true )]
+	static bool ValidateLogSelectedTransformName()
+	{
+		// Return false if no transform is selected.
+		return Selection.activeObject.GetType() == typeof(AddressableAssetGroup);
+	}
+
 	[MenuItem( "Assets/Build Addessable Group", priority = -100 )]
 	public static void BuildAddessableGroup()
 	{
