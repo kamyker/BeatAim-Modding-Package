@@ -45,6 +45,8 @@ public class BuildScriptSingleGroup : BuildScriptBase
 	{
 		var groups = AssetDatabase.FindAssets( "t: AddressableAssetGroup" );
 		List<(BundledAssetGroupSchema schema, bool included)> savedSchemasInBuild = new List<(BundledAssetGroupSchema, bool)>(groups.Length);
+		string oldBuildPath = null;
+		AddressableAssetGroup builtGroup = null;
 		try
 		{
 			foreach ( var g in groups )
@@ -60,8 +62,11 @@ public class BuildScriptSingleGroup : BuildScriptBase
 						schema.IncludeInBuild = true;
 						groupAsset.Settings.buildSettings.bundleBuildPath = "Temp/com.unity.addressables/AssetBundles";
 						var pathNoExtension = System.IO.Path.ChangeExtension(groupPath, null);
+						oldBuildPath = groupAsset.Settings.profileSettings.GetValueByName( groupAsset.Settings.activeProfileId,
+							"LocalBuildPath");
 						groupAsset.Settings.profileSettings.SetValue( groupAsset.Settings.activeProfileId,
 							"LocalBuildPath", $"{pathNoExtension}Exported~/UnityData/{EditorUserBuildSettings.activeBuildTarget}" );
+						builtGroup = groupAsset;
 					}
 					else
 						schema.IncludeInBuild = false;
@@ -90,6 +95,10 @@ public class BuildScriptSingleGroup : BuildScriptBase
 		}
 		finally
 		{
+			if( oldBuildPath != null && builtGroup != null)
+				builtGroup.Settings.profileSettings.SetValue( builtGroup.Settings.activeProfileId,
+					"LocalBuildPath", oldBuildPath );
+
 			foreach ( var s in savedSchemasInBuild )
 				s.schema.IncludeInBuild = s.included;
 		}
