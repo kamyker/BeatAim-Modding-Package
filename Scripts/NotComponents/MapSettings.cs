@@ -5,5 +5,5 @@ public class MapSettings : ScriptableObject
 {
 	public bool DefaultMapEnabled = false;
 	public bool DefaultCloudsEnabled = true;
-	public MinMaxSmoothFloat VisualizeToMusic_GlobalScaling = new MinMaxSmoothFloat(0,1,100, false);
+	public float VisualizeToMusic_GlobalScaling = 1f;
 }
