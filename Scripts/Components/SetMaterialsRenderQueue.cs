@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class SetMaterialsRenderQueue : MonoBehaviour
 {
-	List<KeyValuePair<Material, int>> materials = new List<KeyValuePair<Material, int>>();
+	[System.Serializable]
+	class MatWithQueue
+	{
+		public Material Material;
+		public int Queue = 2501;
+	}
+
+	MatWithQueue[] materials = new MatWithQueue[0];
 
 
 	private void Awake()
 	{
 		foreach ( var m in materials )
-			m.Key.renderQueue = m.Value;
+			m.Material.renderQueue = m.Queue;
 	}
 }
