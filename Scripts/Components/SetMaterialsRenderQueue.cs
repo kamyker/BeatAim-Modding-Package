@@ -11,7 +11,8 @@ public class SetMaterialsRenderQueue : MonoBehaviour
 		public int Queue = 2501;
 	}
 
-	MatWithQueue[] materials = new MatWithQueue[0];
+
+	[SerializeField] MatWithQueue[] materials = new MatWithQueue[0];
 
 
 	private void Awake()
