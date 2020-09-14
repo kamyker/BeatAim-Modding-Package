@@ -116,7 +116,7 @@ public class BuildScriptSingleGroup : BuildScriptBase
 	List<AssetBundleBuild> m_AllBundleInputDefs;
 	List<string> m_OutputAssetBundleNames;
 	HashSet<string> m_CreatedProviderIds;
-	LinkXmlGenerator m_Linker;
+	UnityEditor.Build.Pipeline.Utilities.LinkXmlGenerator m_Linker;
 
 	/// <inheritdoc />
 	public override bool CanBuildData<T>()
@@ -142,7 +142,7 @@ public class BuildScriptSingleGroup : BuildScriptBase
 		runtimeData.BuildTarget = builderInput.Target.ToString();
 		runtimeData.ProfileEvents = builderInput.ProfilerEventsEnabled;
 		runtimeData.LogResourceManagerExceptions = aaSettings.buildSettings.LogResourceManagerExceptions;
-		m_Linker = new LinkXmlGenerator();
+		m_Linker = new UnityEditor.Build.Pipeline.Utilities.LinkXmlGenerator();
 		m_Linker.SetTypeConversion( typeof( UnityEditor.Animations.AnimatorController ), typeof( RuntimeAnimatorController ) );
 		m_Linker.AddTypes( runtimeData.CertificateHandlerType );
 
