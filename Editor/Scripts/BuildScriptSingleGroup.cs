@@ -149,7 +149,7 @@ public class BuildScriptSingleGroup : BuildScriptBase
 		m_ResourceProviderData = new List<ObjectInitializationData>();
 		var aaContext = new AddressableAssetsBuildContext
 		{
-			settings = aaSettings,
+			Settings = aaSettings,
 			runtimeData = runtimeData,
 			bundleToAssetGroup = bundleToAssetGroup,
 			locations = locations,
@@ -196,28 +196,28 @@ public class BuildScriptSingleGroup : BuildScriptBase
 			var buildTargetGroup = builderInput.TargetGroup;
 
 			var buildParams = new AddressableAssetsBundleBuildParameters(
-					aaContext.settings,
+					aaContext.Settings,
 					aaContext.bundleToAssetGroup,
 					buildTarget,
 					buildTargetGroup,
-					aaContext.settings.buildSettings.bundleBuildPath);
+					aaContext.Settings.buildSettings.bundleBuildPath);
 
-			var builtinShaderBundleName = aaContext.settings.DefaultGroup.Guid + "_unitybuiltinshaders.bundle";
+			var builtinShaderBundleName = aaContext.Settings.DefaultGroup.Guid + "_unitybuiltinshaders.bundle";
 			var buildTasks = RuntimeDataBuildTasks(builtinShaderBundleName);
 			buildTasks.Add( extractData );
 
-			string aaPath = aaContext.settings.AssetPath;
+			string aaPath = aaContext.Settings.AssetPath;
 			IBundleBuildResults results;
 			var exitCode = ContentPipeline.BuildAssetBundles(buildParams, new BundleBuildContent(m_AllBundleInputDefs), out results, buildTasks, aaContext);
 
 			if ( exitCode < ReturnCode.Success )
 				return AddressableAssetBuildResult.CreateResult<TResult>( null, 0, "SBP Error" + exitCode );
-			if ( aaContext.settings == null && !string.IsNullOrEmpty( aaPath ) )
-				aaContext.settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>( aaPath );
+			if ( aaContext.Settings == null && !string.IsNullOrEmpty( aaPath ) )
+				aaContext.Settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>( aaPath );
 
 			GenerateLocationListsTask.Run( aaContext, extractData.WriteData );
 
-			foreach ( var assetGroup in aaContext.settings.groups )
+			foreach ( var assetGroup in aaContext.Settings.groups )
 			{
 				if ( assetGroup == null )
 					continue;
@@ -259,7 +259,7 @@ public class BuildScriptSingleGroup : BuildScriptBase
 
 		contentCatalog.InstanceProviderData = ObjectInitializationData.CreateSerializedInitializationData( instanceProviderType.Value );
 		contentCatalog.SceneProviderData = ObjectInitializationData.CreateSerializedInitializationData( sceneProviderType.Value );
-		CreateCatalog( aaContext.settings, contentCatalog, aaContext.runtimeData.CatalogLocations, playerBuildVersion, builderInput.RuntimeCatalogFilename, builderInput.Registry, buildPath );
+		CreateCatalog( aaContext.Settings, contentCatalog, aaContext.runtimeData.CatalogLocations, playerBuildVersion, builderInput.RuntimeCatalogFilename, builderInput.Registry, buildPath );
 		foreach ( var pd in contentCatalog.ResourceProviderData )
 		{
 			m_Linker.AddTypes( pd.ObjectType.Value );
@@ -270,7 +270,7 @@ public class BuildScriptSingleGroup : BuildScriptBase
 		m_Linker.AddTypes( contentCatalog.SceneProviderData.ObjectType.Value );
 		m_Linker.AddTypes( contentCatalog.SceneProviderData.GetRuntimeTypes() );
 
-		foreach ( var io in aaContext.settings.InitializationObjects )
+		foreach ( var io in aaContext.Settings.InitializationObjects )
 		{
 			var provider = io as IObjectInitializationDataProvider;
 			if ( provider != null )
@@ -282,7 +282,7 @@ public class BuildScriptSingleGroup : BuildScriptBase
 			}
 		}
 
-		aaContext.runtimeData.DisableCatalogUpdateOnStartup = aaContext.settings.DisableCatalogUpdateOnStartup;
+		aaContext.runtimeData.DisableCatalogUpdateOnStartup = aaContext.Settings.DisableCatalogUpdateOnStartup;
 
 		m_Linker.AddTypes( typeof( Addressables ) );
 		m_Linker.Save( buildPath + "/link.xml" );
@@ -292,9 +292,9 @@ public class BuildScriptSingleGroup : BuildScriptBase
 		var opResult = AddressableAssetBuildResult.CreateResult<TResult>(settingsPath, aaContext.locations.Count);
 		//save content update data if building for the player
 		var allEntries = new List<AddressableAssetEntry>();
-		aaContext.settings.GetAllAssets( allEntries, false, g => g != null && g.HasSchema<ContentUpdateGroupSchema>() && g.GetSchema<ContentUpdateGroupSchema>().StaticContent );
+		aaContext.Settings.GetAllAssets( allEntries, false, g => g != null && g.HasSchema<ContentUpdateGroupSchema>() && g.GetSchema<ContentUpdateGroupSchema>().StaticContent );
 
-		var remoteCatalogLoadPath = aaContext.settings.BuildRemoteCatalog ? aaContext.settings.RemoteCatalogLoadPath.GetValue(aaContext.settings) : string.Empty;
+		var remoteCatalogLoadPath = aaContext.Settings.BuildRemoteCatalog ? aaContext.Settings.RemoteCatalogLoadPath.GetValue(aaContext.Settings) : string.Empty;
 		if ( extractData.BuildCache != null && ContentUpdateScript.SaveContentState( aaContext.locations, tempPath, allEntries, extractData.DependencyData, playerBuildVersion, remoteCatalogLoadPath ) )
 		{
 			try
@@ -432,7 +432,7 @@ public class BuildScriptSingleGroup : BuildScriptBase
 		if ( schema == null || !schema.IncludeInBuild )
 			return string.Empty;
 
-		var errorStr = ErrorCheckBundleSettings(schema,assetGroup, aaContext.settings);
+		var errorStr = ErrorCheckBundleSettings(schema,assetGroup, aaContext.Settings);
 		if ( !string.IsNullOrEmpty( errorStr ) )
 			return errorStr;
 
