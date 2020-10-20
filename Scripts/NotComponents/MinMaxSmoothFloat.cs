@@ -19,3 +19,19 @@ public class MinMaxSmoothFloat
 		this.opposite = opposite;
 	}
 }
+
+[System.Serializable]
+public class MinMaxSmooth<T>
+{
+	[SerializeField] public T minValue;
+	[SerializeField] public T maxValue;
+	[SerializeField] public float speed = 4;
+	[SerializeField] public bool opposite;
+	public MinMaxSmooth( T minValue, T maxValue, float speed, bool opposite )
+	{
+		this.minValue = minValue;
+		this.maxValue = maxValue;
+		this.speed = speed;
+		this.opposite = opposite;
+	}
+}
