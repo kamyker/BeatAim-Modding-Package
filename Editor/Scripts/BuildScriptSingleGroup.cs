@@ -33,7 +33,7 @@ public static class BuildButtons
 	static bool ValidateBuildAddessableGroup()
 	{
 		// Return false if no transform is selected.
-		return Selection.activeObject.GetType() == typeof( AddressableAssetGroup );
+		return Selection.activeObject != null && Selection.activeObject.GetType() == typeof( AddressableAssetGroup );
 	}
 
 	static T LoadFromGuid<T>( string guid ) where T : UnityEngine.Object => AssetDatabase.LoadAssetAtPath<T>( AssetDatabase.GUIDToAssetPath( guid ) );
