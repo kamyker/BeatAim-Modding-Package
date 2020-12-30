@@ -1,18 +1,15 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
 
 public abstract class MonoBehaviourEventful<T> : MonoBehaviour
-	where T : MonoBehaviourEventful<T>
+    where T : MonoBehaviourEventful<T>
 {
-	public static event Action<T> Enabled;
-	public static event Action<T> Disabled;
+    //this also used in MonoSystem
+    public static event Action<bool, T> Enabled;
 
-	protected abstract T _this { get; }
+    protected void OnEnable()
+        => Enabled?.Invoke( true, (T) this );
 
-	private void OnEnable()
-		=> Enabled?.Invoke( _this );
-
-	private void OnDisable()
-		=> Disabled?.Invoke( _this );
+    protected void OnDisable()
+        => Enabled?.Invoke( false, (T) this );
 }

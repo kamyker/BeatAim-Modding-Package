@@ -7,6 +7,4 @@ public class VisualizeToMusic_MaterialColor : MonoBehaviourEventful<VisualizeToM
 	[SerializeField] public string ShaderFieldName = "_Color";
 	[SerializeField] public MinMaxSmooth<Color> ReactionToMusicLoudness = new MinMaxSmooth<Color>(Color.black,Color.white,3, false);
 	[SerializeField] public bool ChangeSharedMaterial = false;
-
-	protected override VisualizeToMusic_MaterialColor _this => this;
 }
